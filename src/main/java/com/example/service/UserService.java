@@ -72,4 +72,8 @@ public class UserService extends MainService<User> {
     public void deleteUserById(UUID userId) {
         userRepository.deleteUserById(userId);
     }
+
+    public boolean userExists(UUID userId) {
+        return userRepository.getUserById(userId) != null;
+    }
 }

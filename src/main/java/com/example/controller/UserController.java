@@ -51,7 +51,7 @@ public class UserController {
     @PostMapping("/{userId}/removeOrder")
     public ResponseEntity<String> removeOrderFromUser(@PathVariable UUID userId, @RequestParam UUID orderId) {
         userService.removeOrderFromUser(userId, orderId);
-        return ResponseEntity.ok("Order removed successfully.");
+        return ResponseEntity.ok("Order removed successfully");
     }
 
     @DeleteMapping("/{userId}/emptyCart")
@@ -74,8 +74,12 @@ public class UserController {
 
     @DeleteMapping("/delete/{userId}")
     public ResponseEntity<String> deleteUserById(@PathVariable UUID userId) {
+        if (!userService.userExists(userId)) {
+            return ResponseEntity.status(HttpStatus.OK).body("User not found");
+        }
         userService.deleteUserById(userId);
         return ResponseEntity.ok("User deleted successfully");
     }
+
 
 }

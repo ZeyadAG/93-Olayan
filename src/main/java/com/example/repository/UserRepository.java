@@ -12,7 +12,7 @@ import java.util.UUID;
 @SuppressWarnings("rawtypes")
 public class UserRepository extends MainRepository<User> {
 
-    private static final String USERS_JSON_PATH = "data/users.json"; // JSON file path
+    private static final String USERS_JSON_PATH = "src/main/java/com/example/data/users.json"; // JSON file path
 
     public UserRepository() {
     }

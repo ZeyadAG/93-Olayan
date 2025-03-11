@@ -10,7 +10,7 @@ import java.util.UUID;
 @SuppressWarnings("rawtypes")
 public class ProductRepository extends MainRepository<Product> {
 
-    private static final String PRODUCTS_JSON_PATH = "data/products.json"; // JSON file path
+    private static final String PRODUCTS_JSON_PATH = "src/main/java/com/example/data/products.json"; // JSON file path
 
     public ProductRepository() {
     }
