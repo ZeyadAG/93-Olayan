@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.model.Cart;
 import com.example.model.Order;
 import com.example.model.Product;
 import com.example.model.User;
@@ -64,10 +65,11 @@ public class UserController {
     }
 
     @PutMapping("/addProductToCart")
-    public ResponseEntity<String> addProductToCart(@RequestParam UUID userId, @RequestParam UUID productID) {
-        Product product = productService.getProductById(productID);
-        cartService.addProductToCart(userId, product);
-        return ResponseEntity.ok("Product added to cart successfully");
+    public ResponseEntity<String> addProductToCart(@RequestParam UUID userId, @RequestParam UUID productId) {
+        Product product = this.productService.getProductById(productId);
+        Cart cart = cartService.getCartByUserId(userId);
+        cartService.addProductToCart(cart.getId(), product);
+        return ResponseEntity.ok("Product added to cart");
     }
 
     @PutMapping("/deleteProductFromCart")
