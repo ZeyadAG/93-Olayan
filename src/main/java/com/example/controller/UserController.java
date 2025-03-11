@@ -4,6 +4,7 @@ import com.example.model.Order;
 import com.example.model.Product;
 import com.example.model.User;
 import com.example.service.CartService;
+import com.example.service.ProductService;
 import com.example.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +15,12 @@ import java.util.*;
 @RequestMapping("/user")
 public class UserController {
 
+    private final ProductService productService;
     private final UserService userService;
     private final CartService cartService;
 
-    public UserController(UserService userService, CartService cartService) {
+    public UserController(ProductService productService, UserService userService, CartService cartService) {
+        this.productService = productService;
         this.userService = userService;
         this.cartService = cartService;
     }
@@ -61,13 +64,15 @@ public class UserController {
     }
 
     @PutMapping("/addProductToCart")
-    public ResponseEntity<String> addProductToCart(@RequestParam UUID userId, @RequestBody Product product) {
+    public ResponseEntity<String> addProductToCart(@RequestParam UUID userId, @RequestParam UUID productID) {
+        Product product = productService.getProductById(productID);
         cartService.addProductToCart(userId, product);
         return ResponseEntity.ok("Product added to cart successfully");
     }
 
     @PutMapping("/deleteProductFromCart")
-    public ResponseEntity<String> deleteProductFromCart(@RequestParam UUID userId, @RequestBody Product product) {
+    public ResponseEntity<String> deleteProductFromCart(@RequestParam UUID userId, @RequestParam UUID productID) {
+        Product product = productService.getProductById(productID);
         cartService.deleteProductFromCart(userId, product);
         return ResponseEntity.ok("Product removed from cart successfully");
     }
