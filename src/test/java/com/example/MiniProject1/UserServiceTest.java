@@ -157,6 +157,7 @@ class UserServiceTest {
 
     @Test
     void testDeleteProductFromCart() {
+        testCart.getProducts().add(testProduct);
         when(cartRepository.getCartById(cartId)).thenReturn(testCart);
         doNothing().when(cartRepository).updateCart(eq(cartId), any(Cart.class));
         cartService.deleteProductFromCart(cartId, testProduct);
