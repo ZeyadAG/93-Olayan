@@ -3,6 +3,8 @@ package com.example.repository;
 import com.example.model.Cart;
 import org.springframework.stereotype.Repository;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -11,6 +13,7 @@ import java.util.UUID;
 public class CartRepository extends MainRepository<Cart> {
 
     private static final String CARTS_JSON_PATH = "src/main/java/com/example/data/carts.json";
+
 
     public CartRepository() {
     }
@@ -41,10 +44,16 @@ public class CartRepository extends MainRepository<Cart> {
     }
 
     public Cart getCartByUserId(UUID userId) {
-        return getCarts().stream()
+        Cart userCart =  getCarts().stream()
                 .filter(cart -> cart.getUserId().equals(userId))
                 .findFirst()
                 .orElse(null);
+        if (userCart == null){
+            Cart newCart = new Cart(userId);
+            addCart(newCart);
+            return newCart;
+        }
+        return userCart;
     }
 
     public void updateCart(UUID cartId, Cart updatedCart) {
@@ -63,4 +72,11 @@ public class CartRepository extends MainRepository<Cart> {
         carts.removeIf(cart -> cart.getId().equals(cartId));
         overrideData(carts);
     }
+
+    public void saveCart(ArrayList<Cart> carts) {
+        try {
+            objectMapper.writeValue(new File("src/main/java/com/example/data/carts.json"), carts);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to write to JSON file", e);
+        }    }
 }
