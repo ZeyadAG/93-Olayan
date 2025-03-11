@@ -43,12 +43,17 @@ public class CartService extends MainService<Cart> {
         }
     }
 
-    public void deleteProductFromCart(UUID cartId, Product product) {
+    public boolean deleteProductFromCart(UUID cartId, Product product) {
         Cart cart = cartRepository.getCartById(cartId);
         if (cart != null) {
-            cart.getProducts().removeIf(p -> p.getId().equals(product.getId()));
-            cartRepository.updateCart(cartId, cart);
+            if (!cart.getProducts().isEmpty()){
+                cart.getProducts().removeIf(p -> p.getId().equals(product.getId()));
+                cartRepository.updateCart(cartId, cart);
+                return true;
+            }
+
         }
+        return false;
     }
 
     public void deleteCartById(UUID cartId) {
