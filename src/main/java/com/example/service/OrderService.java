@@ -29,11 +29,12 @@ public class OrderService extends MainService<Order> {
         return orderRepository.getOrderById(orderId);
     }
 
-    public void deleteOrderById(UUID orderId) throws IllegalArgumentException {
+    public boolean deleteOrderById(UUID orderId) throws IllegalArgumentException {
         Order order = orderRepository.getOrderById(orderId);
         if (order == null) {
-            throw new IllegalArgumentException("Order not found with ID: " + orderId);
+            return false;
         }
         orderRepository.deleteOrderById(orderId);
+        return true;
     }
 }

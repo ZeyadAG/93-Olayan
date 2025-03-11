@@ -73,10 +73,15 @@ public class UserController {
     }
 
     @PutMapping("/deleteProductFromCart")
-    public ResponseEntity<String> deleteProductFromCart(@RequestParam UUID userId, @RequestParam UUID productID) {
-        Product product = productService.getProductById(productID);
-        cartService.deleteProductFromCart(userId, product);
-        return ResponseEntity.ok("Product removed from cart successfully");
+    public ResponseEntity<String> deleteProductFromCart(@RequestParam UUID userId, @RequestParam UUID productId) {
+        Product product = this.productService.getProductById(productId);
+        Cart cart = cartService.getCartByUserId(userId);
+        boolean flag = cartService.deleteProductFromCart(cart.getId(), product);
+        if(flag){
+            return ResponseEntity.ok("Product deleted from cart");
+        }
+        return ResponseEntity.ok("Cart is empty");
+
     }
 
     @DeleteMapping("/delete/{userId}")
